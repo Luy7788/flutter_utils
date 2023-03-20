@@ -21,7 +21,7 @@ dependencies:
   extended_image: any
   widget_to_image: ^2.0.0
   image_editor: ^1.1.0
-  image_gallery_saver: #1.7.1
+  image_gallery_saver: #1.7.1，以下适配3.0
     git: "https://gitee.com/jlgithub/image_gallery_saver.git"
   palette_generator: ^0.3.3
   flutter_easyloading: ^3.0.5
