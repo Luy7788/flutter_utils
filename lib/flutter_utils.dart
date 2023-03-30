@@ -17,7 +17,7 @@ export 'src/utils/page_anim.dart';
 export 'src/utils/permission_util.dart';
 export 'src/utils/screens.dart';
 export 'src/utils/status_bar_util.dart';
-export 'src/utils/string_util.dart';
+export 'src/utils/storage_util.dart';
 export 'src/utils/string_util.dart';
 export 'src/utils/text_util.dart';
 export 'src/utils/toast.dart';
