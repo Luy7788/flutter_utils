@@ -14,7 +14,7 @@ dependencies:
   #modal
   modal_bottom_sheet: ^2.1.0
   common_utils: ^2.1.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   http: ^0.13.5
   dio: ^4.0.4
   image: ^3.3.0
