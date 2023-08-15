@@ -12,25 +12,25 @@ dependencies:
   flutter:
     sdk: flutter
   #modal
-  modal_bottom_sheet: ^2.1.0
-  common_utils: ^2.1.0
-  intl: ^0.18.0
-  http: ^0.13.5
-  dio: ^4.0.4
-  image: ^3.3.0
+  modal_bottom_sheet: any
+  common_utils: any
+  intl: any
+#  http: ^0.13.5
+  dio: any
+  image: any
   extended_image: any
-  widget_to_image: ^2.0.0
-  image_editor: ^1.1.0
+  widget_to_image: any
+  image_editor: any
   image_gallery_saver: #1.7.1，以下适配3.0
     git: "https://gitee.com/jlgithub/image_gallery_saver.git"
-  palette_generator: ^0.3.3
-  flutter_easyloading: ^3.0.5
-  uni_links: ^0.5.1
-  path_provider: ^2.0.8
-  permission_handler: ^8.1.6
-  app_settings: ^4.1.8
-  shared_preferences: ^2.0.7
-  fluttertoast: ^8.0.9
+  palette_generator: any
+  flutter_easyloading: any
+  uni_links: any
+#  accentColor: any
+  permission_handler: any
+  app_settings: any
+  shared_preferences: any
+  fluttertoast: any
 
 dev_dependencies:
   flutter_test:
