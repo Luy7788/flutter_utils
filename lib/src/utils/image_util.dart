@@ -8,8 +8,10 @@ import 'package:flutter_utils/src/utils/screens.dart';
 import 'package:image/image.dart' as Image;
 import 'package:image_editor/image_editor.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:widget_to_image/widget_to_image.dart';
 import 'package:palette_generator/palette_generator.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 // import 'package:image/image.dart';
 // import 'package:exif/exif.dart';
@@ -261,5 +263,57 @@ class ImageUtil {
         return await getNetworkImageData(imageUrl);
       }
     }
+  }
+}
+
+class WidgetToImage {
+  static Future<ByteData> repaintBoundaryToImage(GlobalKey key, {double pixelRatio = 1.0}) {
+    return new Future.delayed(const Duration(milliseconds: 20), () async {
+      RenderRepaintBoundary repaintBoundary = key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+
+      ui.Image image = await repaintBoundary.toImage(pixelRatio: pixelRatio);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+      return byteData!;
+    });
+  }
+
+  static Future<ByteData> widgetToImage(Widget widget, {
+    Alignment alignment = Alignment.center,
+    Size size = const Size(double.maxFinite, double.maxFinite),
+    double devicePixelRatio = 1.0,
+    double pixelRatio = 1.0
+  }) async {
+    RenderRepaintBoundary repaintBoundary = RenderRepaintBoundary();
+
+    RenderView renderView = RenderView(
+      child: RenderPositionedBox(alignment: alignment, child: repaintBoundary),
+      configuration: ViewConfiguration(
+        size: size,
+        devicePixelRatio: devicePixelRatio,
+      ),
+      view: WidgetsBinding.instance.platformDispatcher.views.first,
+    );
+
+    PipelineOwner pipelineOwner = PipelineOwner();
+    pipelineOwner.rootNode = renderView;
+    renderView.prepareInitialFrame();
+
+    BuildOwner buildOwner = BuildOwner(focusManager: FocusManager());
+    RenderObjectToWidgetElement rootElement = RenderObjectToWidgetAdapter(
+      container: repaintBoundary,
+      child: widget,
+    ).attachToRenderTree(buildOwner);
+    buildOwner.buildScope(rootElement);
+    buildOwner.finalizeTree();
+
+    pipelineOwner.flushLayout();
+    pipelineOwner.flushCompositingBits();
+    pipelineOwner.flushPaint();
+
+    ui.Image image = await repaintBoundary.toImage(pixelRatio: pixelRatio);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+    return byteData!;
   }
 }
