@@ -16,11 +16,11 @@ dependencies:
   common_utils: any
   intl: any
 #  http: ^0.13.5
-  dio: any
-  image: any
+  dio: ^4.0.4
+  image: ^4.0.15
   extended_image: any
-  widget_to_image: any
-  image_editor: any
+#  widget_to_image: any
+  image_editor: ^1.3.0
   image_gallery_saver: #1.7.1，以下适配3.0
     git: "https://gitee.com/jlgithub/image_gallery_saver.git"
   palette_generator: any

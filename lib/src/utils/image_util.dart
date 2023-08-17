@@ -5,7 +5,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_utils/src/utils/screens.dart';
-import 'package:image/image.dart' as Image;
+import 'package:image/image.dart' as Image2;
 import 'package:image_editor/image_editor.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:palette_generator/palette_generator.dart';
@@ -23,7 +23,8 @@ class ImageUtil {
   ///获取图片exif信息
   static void getExif(String? path) async {
     var asa = await rootBundle.load("assets/image/DJ2.jpg");
-    Uint8List fileBytes = path != null ? File(path).readAsBytesSync() : asa.buffer.asUint8List();
+    Uint8List fileBytes =
+        path != null ? File(path).readAsBytesSync() : asa.buffer.asUint8List();
     // final data = await readExifFromBytes(fileBytes, strict: true);
     // if (data.isEmpty) {
     //   debugPrint("No EXIF information found");
@@ -86,10 +87,11 @@ class ImageUtil {
     int? rotateAngle,
   }) async {
     Uint8List? result;
-    debugPrint("cropRect:$cropRect, flipHorizontal:$flipHorizontal, flipVertical:$flipVertical, rotateAngle:$rotateAngle");
+    debugPrint(
+        "cropRect:$cropRect, flipHorizontal:$flipHorizontal, flipVertical:$flipVertical, rotateAngle:$rotateAngle");
     try {
       final ImageEditorOption option = ImageEditorOption();
-      if (needCrop == true && cropRect!=null) {
+      if (needCrop == true && cropRect != null) {
         option.addOption(ClipOption.fromRect(cropRect));
       }
       if (needFlip == true) {
@@ -116,9 +118,14 @@ class ImageUtil {
     required Uint8List rawImage,
     required Rect cropRect,
   }) async {
-    var img = Image.decodeImage(rawImage)!;
-    var thumbnail = Image.copyCrop(img, cropRect.left.toInt(),
-        cropRect.top.toInt(), cropRect.width.toInt(), cropRect.height.toInt());
+    var img = Image2.decodeImage(rawImage)!;
+    var thumbnail = Image2.copyCrop(
+      img,
+      x: cropRect.left.toInt(),
+      y: cropRect.top.toInt(),
+      width: cropRect.width.toInt(),
+      height: cropRect.height.toInt(),
+    );
     return thumbnail.getBytes();
   }
 
@@ -241,7 +248,9 @@ class ImageUtil {
   }) async {
     try {
       RenderRepaintBoundary boundary = context.findRenderObject() as RenderRepaintBoundary;
-      var image = await boundary.toImage(pixelRatio: pixelRatio ?? Screens.pixelRatio);
+      var image = await boundary.toImage(
+        pixelRatio: pixelRatio ?? Screens.pixelRatio,
+      );
       ByteData? bytes = await image.toByteData(format: ui.ImageByteFormat.png);
       var pngBytes = bytes?.buffer.asUint8List();
       return pngBytes;
@@ -267,23 +276,25 @@ class ImageUtil {
 }
 
 class WidgetToImage {
-  static Future<ByteData> repaintBoundaryToImage(GlobalKey key, {double pixelRatio = 1.0}) {
-    return new Future.delayed(const Duration(milliseconds: 20), () async {
-      RenderRepaintBoundary repaintBoundary = key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+  static Future<ByteData> repaintBoundaryToImage(GlobalKey key,
+      {double pixelRatio = 1.0}) {
+    return Future.delayed(const Duration(milliseconds: 20), () async {
+      RenderRepaintBoundary repaintBoundary =
+          key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
 
       ui.Image image = await repaintBoundary.toImage(pixelRatio: pixelRatio);
-      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
 
       return byteData!;
     });
   }
 
-  static Future<ByteData> widgetToImage(Widget widget, {
-    Alignment alignment = Alignment.center,
-    Size size = const Size(double.maxFinite, double.maxFinite),
-    double devicePixelRatio = 1.0,
-    double pixelRatio = 1.0
-  }) async {
+  static Future<ByteData> widgetToImage(Widget widget,
+      {Alignment alignment = Alignment.center,
+      Size size = const Size(double.maxFinite, double.maxFinite),
+      double devicePixelRatio = 1.0,
+      double pixelRatio = 1.0}) async {
     RenderRepaintBoundary repaintBoundary = RenderRepaintBoundary();
 
     RenderView renderView = RenderView(
